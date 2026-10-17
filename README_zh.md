@@ -15,6 +15,7 @@
 | [workflows/ci.yaml](./.github/workflows/ci.yaml) | Pull request | 配置 pnpm 和 Node.js LTS，通过 `pnpm i` 安装依赖，执行 `pnpm run lint`。 | 合并 PR 前检查代码风格。当前工作流没有运行测试或构建。 |
 | [workflows/autofix.yml](./.github/workflows/autofix.yml) | 目标分支为 `main` 的 PR | 使用 `--frozen-lockfile` 安装依赖，执行 `pnpm lint --fix`，将产生的修改交给 autofix.ci 处理。 | 为提交到主分支的贡献提供自动代码风格修复。 |
 | [workflows/semantic-pull-requests.yaml](./.github/workflows/semantic-pull-requests.yaml) | Pull request target：打开、编辑或同步 | 校验符合 Conventional Commits 风格的 PR 标题，拒绝以 ASCII 大写字母开头的主题。仅在配置的 `{owner}/{repo}` 仓库运行。 | 统一 PR 标题，便于审查和维护发布记录。 |
+| [workflows/pr-template.yml](./.github/workflows/pr-template.yml) | Pull request target：打开、编辑或重新打开 | 校验外部贡献者是否保留关联 Issue、背景和修改说明标题。缺失时评论列出对应栏目并关闭不合规 PR；跳过机器人和具有写权限的贡献者。 | 在不检出或执行贡献者代码的前提下，强制使用共享 PR 描述结构。 |
 | [workflows/enforce-release-source.yml](./.github/workflows/enforce-release-source.yml) | 目标为 `release` 的 pull request target：打开、重新打开或编辑 | 如果来源不是配置仓库的 `main` 分支，则检查失败。 | 限制发布晋级只能通过同一仓库的 `main` 分支 PR 进行。需将该检查设为必需检查，才能阻止不符合要求的合并。 |
 | [workflows/pkg.pr.new.yml](./.github/workflows/pkg.pr.new.yml) | 修改了 `src/**` 的 PR | 安装依赖，执行 `pnpm build` 和 `npx pkg-pr-new publish`。取消同一 PR 的旧运行。 | 发布预览包，便于在合并前试用源码修改。 |
 | [workflows/release.yml](./.github/workflows/release.yml) | 推送匹配 `v*` 的标签 | 调用 `lonewolfyx-workflows/npm-public-actions@main`，指定 pnpm，然后携带 `GITHUB_TOKEN` 执行 `npx genereleaselog@latest`。 | 根据版本标签自动发布包并生成发布日志；使用前需修正下文说明的权限配置位置。 |
